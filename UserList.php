@@ -3,7 +3,7 @@
 <?php
 
   echo "<table style='border: solid 1px black;'>";
-  echo "<tr><th>Sl No.</th><th>Firstname</th><th>Lastname</th><th>Email</th><th>Mobile No.</th></tr>";
+  // echo "<tr><th>Sl No.</th><th>Firstname</th><th>Lastname</th><th>Email</th><th>Mobile No.</th></tr>";
 
   class UserList extends RecursiveIteratorIterator {
     function __construct($it) {

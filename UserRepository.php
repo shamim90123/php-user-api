@@ -1,52 +1,57 @@
 <?php
 
 require __DIR__ . '/UserInterface.php';
-
 require 'DBConnection.php';
-
 require 'UserList.php';
 
 class UserRepository implements getUserInterface {
 
-  public $connection;
+  private $connection;
 
   public function __construct()
-    {
-
-      $dbConnection = new DBConnection();
-
-      $this->connection = $dbConnection->connect();
-
-    }
-
+  {
+    $dbConnection = new DBConnection();
+    $this->connection = $dbConnection->connect();
+  }
 
   public function getAll()
   {
-    $stmt = $this->connection->prepare("SELECT id, first_name, last_name, email, mobile_no FROM employees");
+    $query = "SELECT id, first_name, last_name, email, mobile_no FROM employees";
+    $result = $this->connection->query($query);
 
-    $stmt->execute();
-
-    // set the resulting array to associative
-    $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-
-    foreach(new UserList(new RecursiveArrayIterator($stmt->fetchAll())) as $k=>$v) {
-      echo $v;
+    if ($result->num_rows > 0) {
+        echo "<table border='1'>";
+        echo "<tr><th>Sl No.</th><th>Firstname</th><th>Lastname</th><th>Email</th><th>Mobile No.</th></tr>";
+        
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>" . $row['id'] . "</td>";
+            echo "<td>" . $row['first_name'] . "</td>";
+            echo "<td>" . $row['last_name'] . "</td>";
+            echo "<td>" . $row['email'] . "</td>";
+            echo "<td>" . $row['mobile_no'] . "</td>";
+            echo "</tr>";
+        }
+        
+        echo "</table>";
+    } else {
+        echo "No records found";
     }
   }
 
   public function createUser($firstName = null, $lastName = null, $email = null, $mobileNo = null)
   {
     try {
-
       $sql = "INSERT INTO employees (first_name, last_name, email, mobile_no)
       VALUES ('$firstName', '$lastName', '$email', '$mobileNo')";
 
-      // use exec() because no results are returned
-      $this->connection->exec($sql);
-
-      echo "  New record created successfully";
-    } catch(PDOException $e) {
-      echo $sql . "<br>" . $e->getMessage();
+      if ($this->connection->query($sql) === TRUE) {
+        echo "New record created successfully";
+      } else {
+        echo "Error: " . $sql . "<br>" . $this->connection->error;
+      }
+    } catch(Exception $e) {
+      echo "Error: " . $e->getMessage();
     }
   }
 }
