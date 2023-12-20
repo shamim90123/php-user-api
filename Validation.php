@@ -17,7 +17,7 @@ class Validation
 			}
 
 			if(empty($lastName)) {
-				echo "<font color='red'>Age field is empty.</font><br/>";
+				echo "<font color='red'>LastName field is empty.</font><br/>";
 			}
 
 			if(empty($email)) {
@@ -25,7 +25,7 @@ class Validation
 			}
 
 			if(empty($mobileNo)) {
-				echo "<font color='red'>Email field is empty.</font><br/>";
+				echo "<font color='red'>MobileNo field is empty.</font><br/>";
 			}
 
 			//link to the previous page
