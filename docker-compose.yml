@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  phpcrud:
+    build: .
+    image: php-crud-app-yml
+    container_name: php-crud-container-yml
+    ports:
+      - "8081:80"
+    environment:
+      MYSQL_HOST: mysql-container  # Assuming this is the hostname of your MySQL container
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: crud_example
+      MYSQL_USER: shamim
+      MYSQL_PASSWORD: 123456
+    networks:
+      - shamim-network
+    volumes:
+      - E:\\laragon\\www\\php-user-api:/var/www/html  # Replace with the actual path to your PHP app
+
+networks:
+  shamim-network:
+    external: true
+
+# docker-compose down
+# docker-compose up -d
